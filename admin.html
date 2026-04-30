@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Mariano Segundo Viloria Velez</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-section { padding-top: 12rem; min-height: 80vh; }
+        .auth-card { max-width: 40rem; margin: 0 auto; background: var(--bg-card); padding: 4rem; border-radius: 2rem; border: 1px solid var(--glass-border); }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem; }
+        .project-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 1.5rem; overflow: hidden; }
+        .project-table th, .project-table td { padding: 2rem; text-align: left; border-bottom: 1px solid var(--glass-border); }
+        .project-table th { background: rgba(255,255,255,0.05); color: var(--secondary); font-size: 1.4rem; }
+        .action-btn { padding: 0.8rem; border-radius: 0.5rem; cursor: pointer; border: none; margin-right: 1rem; }
+        .btn-edit { background: var(--primary); color: white; }
+        .btn-delete { background: #ef4444; color: white; }
+        
+        /* Modal for creating/editing */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: var(--bg-dark); width: 100%; max-width: 60rem; padding: 4rem; border-radius: 2.5rem; border: 1px solid var(--primary); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">MV<span>.</span> Admin</a>
+            <button id="logout-btn" class="btn-admin" style="display: none; background: #ef4444; color: white;">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <!-- Auth Section -->
+    <section id="auth-section" class="admin-section">
+        <div class="container">
+            <div class="auth-card">
+                <h2 style="text-align: center; margin-bottom: 3rem;">Inicia Sesión</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="login-password" class="form-control" required>
+                    </div>
+                    <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%;">Entrar</button>
+                    <p id="auth-toggle-text" style="text-align: center; margin-top: 2rem; cursor: pointer; color: var(--text-muted); font-size: 1.2rem;">¿No tienes cuenta? <span style="color: var(--secondary)">Regístrate</span></p>
+                    <p id="auth-error" style="color: #ef4444; margin-top: 2rem; text-align: center; font-size: 1.2rem;"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard-section" class="admin-section" style="display: none;">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Gestión de Proyectos</h2>
+                <button class="btn btn-primary" id="open-modal-btn"><i class="fa-solid fa-plus"></i> Nuevo Proyecto</button>
+            </div>
+            
+            <table class="project-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Título</th>
+                        <th>Categoría</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="projects-list">
+                    <!-- Dynamic content -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title" style="margin-bottom: 2rem;">Nuevo Proyecto</h3>
+            <form id="project-form">
+                <input type="hidden" id="project-id">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="project-title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <input type="text" id="project-category" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="project-desc" class="form-control" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>URL Imagen</label>
+                    <input type="text" id="project-image" class="form-control" placeholder="https://..." required>
+                </div>
+                <div style="display: flex; gap: 2rem; margin-top: 3rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar</button>
+                    <button type="button" class="btn btn-secondary" id="close-modal-btn" style="flex: 1;">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
